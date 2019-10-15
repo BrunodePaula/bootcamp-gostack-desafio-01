@@ -7,6 +7,7 @@ server.use(express.json());
 const projects = [];
 let logs = 0;
 
+//Middleware checar Id 
 function checkId(req, res, next) {
 
   const { id } = req.params;
@@ -20,6 +21,7 @@ function checkId(req, res, next) {
   return next();
 }
 
+//Middleware contagem de requisições
 function qtdLogs(req, res, next) {
  
   qtd = logs++;
@@ -30,10 +32,12 @@ function qtdLogs(req, res, next) {
   
 }
 
+//Rota listagem de projetos
 server.get('/projects', qtdLogs, (req, res) => {
   return res.json(projects);
 });
 
+//Rota de inserção de projetos
 server.post('/projects', qtdLogs, (req, res) => {
   const { id, title } = req.body;
 
@@ -48,6 +52,7 @@ server.post('/projects', qtdLogs, (req, res) => {
   return res.json(project);
 });
 
+//Rota de atualização de projeto
 server.put('/projects/:id', checkId, qtdLogs,  (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
@@ -60,6 +65,7 @@ server.put('/projects/:id', checkId, qtdLogs,  (req, res) => {
 
 });
 
+//Rota de exclusão de projeto
 server.delete('/projects/:id', checkId, qtdLogs,  (req, res) => {
 
   const { id } = req.params;
@@ -72,6 +78,7 @@ server.delete('/projects/:id', checkId, qtdLogs,  (req, res) => {
 
 });
 
+//Rota de criação de tasks do projeto
 server.post('/projects/:id/tasks', checkId, qtdLogs, (req, res) => {
 
   const { title } = req.body;
